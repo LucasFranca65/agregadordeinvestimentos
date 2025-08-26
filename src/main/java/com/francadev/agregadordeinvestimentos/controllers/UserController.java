@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -19,18 +20,32 @@ public class UserController {
     }
 
     @GetMapping
-    public String indexUsers(){
-        return "Index usuarios";
+    public ResponseEntity<List<User>> indexUsers(){
+        List<User> usersList = userService.getAllUsers();
+        if(usersList.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(usersList);
+        }
     }
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto){
+    public ResponseEntity<User> saveNewUser(@RequestBody CreateUserDto createUserDto){
         var userId = userService.createUser(createUserDto);
-        return ResponseEntity.created(URI.create("/api/v1/users/user/"+userId.toString())).build();
+        if(userId == null){
+            return ResponseEntity.badRequest().build();
+        }else{
+            return ResponseEntity.created(URI.create("/api/v1/users/user/"+userId.toString())).build();
+        }
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") String userId){
-        return null;
+        var user = userService.getUserById(userId);
+        if(user.isPresent()){
+            return ResponseEntity.ok(user.get());
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
