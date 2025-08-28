@@ -1,6 +1,7 @@
 package com.francadev.agregadordeinvestimentos.service;
 
 import com.francadev.agregadordeinvestimentos.dto.CreateUserDto;
+import com.francadev.agregadordeinvestimentos.dto.UpdateUserDto;
 import com.francadev.agregadordeinvestimentos.models.User;
 import com.francadev.agregadordeinvestimentos.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,19 @@ public class UserService {
         var userDeleted = userRepository.findById(UUID.fromString(userId));
         if(userDeleted.isPresent()){
             userRepository.deleteById(userDeleted.get().getUser_id());
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean updateUserById(String userId, UpdateUserDto updateUserDto){
+        var userEdit = userRepository.findById(UUID.fromString(userId));
+        if(userEdit.isPresent()){
+            var userUpdate = userEdit.get();
+            userUpdate.setUser_nome(updateUserDto.user_name());
+            userUpdate.setUser_password(updateUserDto.user_password());
+            userRepository.save(userUpdate);
             return true;
         }else{
             return false;

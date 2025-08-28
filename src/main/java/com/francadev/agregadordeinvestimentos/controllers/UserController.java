@@ -1,6 +1,7 @@
 package com.francadev.agregadordeinvestimentos.controllers;
 
 import com.francadev.agregadordeinvestimentos.dto.CreateUserDto;
+import com.francadev.agregadordeinvestimentos.dto.UpdateUserDto;
 import com.francadev.agregadordeinvestimentos.models.User;
 import com.francadev.agregadordeinvestimentos.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,15 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateUserById(@PathVariable("userId") String userId, @RequestBody UpdateUserDto updateUserDto){
+        if(userService.updateUserById(userId,updateUserDto)){
+            return ResponseEntity.noContent().build();
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
