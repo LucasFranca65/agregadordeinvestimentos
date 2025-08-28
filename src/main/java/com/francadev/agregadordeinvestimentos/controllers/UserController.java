@@ -32,6 +32,7 @@ public class UserController {
     public ResponseEntity<User> saveNewUser(@RequestBody CreateUserDto createUserDto){
         var userId = userService.createUser(createUserDto);
         if(userId == null){
+            System.out.println("Erro ao salvar");
             return ResponseEntity.badRequest().build();
         }else{
             return ResponseEntity.created(URI.create("/api/v1/users/user/"+userId.toString())).build();

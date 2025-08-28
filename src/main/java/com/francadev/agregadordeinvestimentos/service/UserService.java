@@ -26,22 +26,24 @@ public class UserService {
 
     public UUID createUser(@RequestBody CreateUserDto createUserDto){
 
-        try {
-           var entity = new User(
-                    UUID.randomUUID(),
-                    createUserDto.user_name(),
-                    createUserDto.user_email(),
-                    createUserDto.user_password(),
-                    Instant.now(),
-                    null
-           );
-           var userSaved = userRepository.save(entity);
+            try {
+                var entity = new User(
+                        null,
+                        createUserDto.user_name(),
+                        createUserDto.user_email(),
+                        createUserDto.user_password(),
+                        Instant.now(),
+                        null
+                );
+                var userSaved = userRepository.save(entity);
 
-           return userSaved.getUser_id();
+                return userSaved.getUser_id();
+            }catch (Exception e){
+                return null;
+            }
 
-        }catch (Exception e){
-            return null;
-        }
+
+
 
     }
 
