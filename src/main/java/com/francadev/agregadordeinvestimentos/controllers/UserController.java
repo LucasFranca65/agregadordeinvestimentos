@@ -39,7 +39,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") String userId){
         var user = userService.getUserById(userId);
         if(user.isPresent()){
@@ -47,6 +47,16 @@ public class UserController {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable("userId") String userId){
+        if(userService.deleteUserById(userId)){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 

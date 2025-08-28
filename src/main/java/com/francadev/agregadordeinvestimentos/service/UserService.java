@@ -51,4 +51,15 @@ public class UserService {
         return userRepository.findById(UUID.fromString(userId));
 
     }
+
+    public boolean deleteUserById(String userId) {
+        var userDeleted = userRepository.findById(UUID.fromString(userId));
+        if(userDeleted.isPresent()){
+            userRepository.deleteById(userDeleted.get().getUser_id());
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
